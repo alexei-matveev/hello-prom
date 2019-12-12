@@ -4,5 +4,9 @@ namePrefix: ""
 nameSuffix: ""
 commonLabels:
   app: "prometheus"
+configMapGenerator:
+  - name: "config"
+    files:
+      - "prometheus.yml"
 resources:
   - deployment.yaml
