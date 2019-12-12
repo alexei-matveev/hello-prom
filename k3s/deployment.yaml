@@ -28,6 +28,8 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9090
+        # This appears to be a CWD of the process, cf. /proc/1/cwd
+        # symlink:
         volumeMounts:
         - mountPath: "/prometheus"
           name: "prometheus"
