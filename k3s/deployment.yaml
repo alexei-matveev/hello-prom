@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment
+  name: prometheus
 spec:
   replicas: 1
   selector:
@@ -28,6 +28,14 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9090
+        volumeMounts:
+        - mountPath: "/prometheus"
+          name: "prometheus"
+
+      volumes:
+      - name: "prometheus"
+        persistentVolumeClaim:
+          claimName: "prometheus"
 ---
 apiVersion: v1
 kind: Service
@@ -60,16 +68,17 @@ spec:
       - backend:
           serviceName: prometheus
           servicePort: 9090
+---
 # https://github.com/rancher/local-path-provisioner
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: prometheus
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: local-path
-#   resources:
-#     requests:
-#       storage: 1Gi
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
 ...
