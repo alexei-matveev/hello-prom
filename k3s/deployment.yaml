@@ -1,4 +1,7 @@
 # kubectl apply -k .
+#
+# See also https://github.com/bibinwilson/kubernetes-prometheus
+#
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,8 +18,8 @@ spec:
     spec:
       containers:
       #
-      # Prometheus runs inside the container with a comand line
-      # looking like this:
+      # Vanilla  Prometheus runs  inside the  container with  a comand
+      # line looking like this:
       #
       #   /bin/prometheus --config.file=/etc/prometheus/prometheus.yml
       #   --storage.tsdb.path=/prometheus
@@ -26,18 +29,32 @@ spec:
       - name: prometheus
         image: prom/prometheus:v2.14.0
         imagePullPolicy: IfNotPresent
+        args:
+          - "--config.file=/config/prometheus.yml"
+          - "--storage.tsdb.path=/prometheus"
+          - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+          - "--web.console.templates=/usr/share/prometheus/consoles"
         ports:
         - containerPort: 9090
         # This appears to be a CWD of the process, cf. /proc/1/cwd
         # symlink:
         volumeMounts:
-        - mountPath: "/prometheus"
+        - mountPath: "/prometheus/"
           name: "prometheus"
+        # FIXME: there are two  symlinks in /etc/prometheus. Will they
+        # be eclipsed by  this mount? For some reason it  does work if
+        # one mounts the CM at /etc/prometheus. Hm?
+        - mountPath: "/config/"
+          name: "config"
 
       volumes:
       - name: "prometheus"
         persistentVolumeClaim:
           claimName: "prometheus"
+      - name: "config"
+        configMap:
+          defaultMode: 420      # Hm?
+          name: "config"
 ---
 apiVersion: v1
 kind: Service
