@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: prometheus
-        image: prom/prometheus:v2.14.0
+        image: prom/prometheus:v2.25.0
         imagePullPolicy: IfNotPresent
         #
         # Vanilla  Prometheus  runs   as  /bin/prometheus  inside  the
