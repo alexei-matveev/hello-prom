@@ -71,7 +71,7 @@ spec:
 #     http://prometheus.localhost
 #     https://prometheus.localhost
 #
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
@@ -80,9 +80,13 @@ spec:
   - host: prometheus.localhost
     http:
       paths:
-      - backend:
-          serviceName: prometheus
-          servicePort: 9090
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prometheus
+            port:
+              number: 9090
 ---
 # https://github.com/rancher/local-path-provisioner
 apiVersion: v1
