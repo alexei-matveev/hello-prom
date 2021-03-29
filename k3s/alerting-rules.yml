@@ -13,3 +13,10 @@ groups:
       test: "yes"
     annotations:
       summary: "This is a test alert just to have some ..."
+  - alert: "Does it need to be a DNS-like identifier?"
+    expr: up > 0.1
+    for: 1m
+    labels:
+      answer: "apparently no"
+    annotations:
+      summary: "I dont get why the convention ist to use DNSLikeIdentifiers ..."
