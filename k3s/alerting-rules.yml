@@ -1,0 +1,15 @@
+#
+# Alerting Rules, see  [1]. They seem to be required  to be defined in
+# separate file.
+#
+# [1] https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
+groups:
+- name: example
+  rules:
+  - alert: HelloJob
+    expr: up > 0
+    for: 1m
+    labels:
+      test: "yes"
+    annotations:
+      summary: "This is a test alert just to have some ..."

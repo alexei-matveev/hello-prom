@@ -11,10 +11,12 @@ alerting:
     - targets:
       # - alertmanager:9093
 
-# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+# Load  rules once  and periodically  evaluate them  according to  the
+# global  'evaluation_interval'. There  seem to  be no  way to  inline
+# alerting rules into the config file --- it needs to go to a separate
+# file. Go figure ..
 rule_files:
-  # - "first_rules.yml"
-  # - "second_rules.yml"
+  - "alerting-rules.yml"
 
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.

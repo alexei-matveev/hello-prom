@@ -8,5 +8,6 @@ configMapGenerator:
   - name: "config"
     files:
       - "prometheus.yml"
+      - "alerting-rules.yml"
 resources:
-  - deployment.yaml
+  - "deployment.yaml"
